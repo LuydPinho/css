@@ -1,0 +1,59 @@
+/*
+ Incorporação de áudio do YouTube
+ --------------------
+
+ Autor: Amit Agarwal
+ Web: http://www.labnol.org/?p=26740
+ Via: https://codepen.io/onigetoc/pen/YNdYBw
+*/
+
+jogador var;
+
+função onYouTubeIframeAPIReady() {
+
+  var ctrlq = document.getElementById("youtube-audio");
+  ctrlq.innerHTML = '<img id="youtube-icon" src=""/><div id="youtube-player"></div>';
+  ctrlq.style.cssText = 'largura:100px;margem:2em auto;cursor:ponteiro;cursor:mão;display:none';
+  ctrlq.onclick=toggleÁudio;
+
+  player = novo YT.Player('youtube-player', {
+    altura: '0',
+    largura: '0',
+    ID do vídeo: ctrlq.dataset.video,
+    playerVars: {
+      reprodução automática: ctrlq.dataset.autoplay,
+      loop: ctrlq.dataset.loop,
+    },
+    eventos: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+function togglePlayButton(reproduzir) {
+  document.getElementById("youtube-icon").src = reproduzir? "https://2.bp.blogspot.com/-W-F4Lwz5qFk/Wnw5vbpwByI/AAAAAAASgU/QRLkcMQaWH0tZ6n5qSXZFu9OguaUr8c6ACLcBGAs/s1600/pausepink.png": "https://1.bp.blogspot.com/-i2SfKR ZeovY/Wnw5uFcc7LI/AAAAAAASgQ /_GTv84bnVLEOcIwBRzhqpN42EaFtX7mWgCLcBGAs/s1600/playpink.png";
+}
+
+função alternarÁudio() {
+  if (player.getPlayerState() == 1 || player.getPlayerState() == 3) {
+    player.pauseVideo();
+    togglePlayButton(falso);
+  } outro {
+    player.playVideo();
+    togglePlayButton(true);
+  }
+}
+
+função onPlayerReady(evento) {
+  //event.target.setVolume(100);
+  player.setPlaybackQuality("pequeno"); //alta resolução, hd1080, hd720, grande, médio, pequeno
+  document.getElementById("youtube-audio").style.display = "bloquear";
+  togglePlayButton(player.getPlayerState() !== 5);
+}
+
+função onPlayerStateChange(evento) {
+  if (evento.dados === 0) {
+    togglePlayButton(falso);
+  }
+}
